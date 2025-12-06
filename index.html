@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Simple JSON Storage</title>
+</head>
+<body>
+    <h2>JSON Storage Demo</h2>
+
+    <textarea id="json" rows="10" style="width:100%;"></textarea><br><br>
+
+    <button onclick="saveJSON()">Save JSON</button>
+    <button onclick="loadJSON()">Load JSON</button>
+    <button onclick="clearJSON()">Clear JSON</button>
+
+    <h3>Result:</h3>
+    <pre id="output"></pre>
+
+<script>
+async function saveJSON() {
+    const text = document.getElementById("json").value;
+
+    const res = await fetch("/.netlify/functions/save", {
+        method: "POST",
+        body: text
+    });
+
+    document.getElementById("output").innerText = await res.text();
+}
+
+async function loadJSON() {
+    const res = await fetch("/.netlify/functions/load");
+    document.getElementById("output").innerText = await res.text();
+}
+
+async function clearJSON() {
+    const res = await fetch("/.netlify/functions/clear", { method: "POST" });
+    document.getElementById("output").innerText = await res.text();
+}
+</script>
+</body>
+</html>
